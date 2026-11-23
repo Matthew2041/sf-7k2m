@@ -218,3 +218,5 @@ textarea.input { resize: none; }
 .lock-col .lock-card { width: 100%; }
 .notice { padding: 12px 14px; border-radius: var(--r-ctl); background: var(--warn-soft); color: var(--text); border: 1px solid color-mix(in srgb, var(--warn) 35%, transparent); font-size: 13px; line-height: 1.45; }
 .notice b { color: var(--warn); }
+
+.diag { text-align: center; font-size: 11px; color: var(--muted); margin: 2px 0 0; }

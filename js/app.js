@@ -174,7 +174,9 @@ async function renderLock() {
   const installed = navigator.standalone === true || matchMedia('(display-mode: standalone)').matches;
   const notice = ios && !installed ? h('div', { class: 'notice', role: 'note' }, h('b', {}, 'Install before you start. '),
     'This is a browser tab, which keeps its own separate storage. Tap Share → Add to Home Screen, then open Stuff Finder from its icon. A passcode created here will not carry over.') : null;
-  app.replaceChildren(h('div', { class: 'lock-wrap' }, h('div', { class: 'lock-col' }, notice, form)));
+  const persisted = await navigator.storage?.persisted?.().catch(() => null);
+  const diag = h('p', { class: 'diag' }, `${installed ? 'Installed app' : 'Browser tab'} · ${first ? 'no vault yet' : 'vault found'} · storage ${persisted ? 'protected' : 'not protected'} · launch ${LS.get('launches', '1')}`);
+  app.replaceChildren(h('div', { class: 'lock-wrap' }, h('div', { class: 'lock-col' }, notice, form, diag)));
   setTimeout(() => pass.focus(), 250);
 }
 
@@ -644,5 +646,6 @@ addEventListener('pagehide', () => { if (Number(LS.get('lock', '60')) === 0) loc
 // ---------- boot ----------
 applyTheme();
 navigator.storage?.persist?.(); // ask the browser not to evict our data
+LS.set('launches', String(Number(LS.get('launches', '0')) + 1)); // visible on the lock screen to diagnose storage resets
 renderLock();
 if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').catch(() => {});

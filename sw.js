@@ -1,5 +1,5 @@
 // Offline cache. Only static app files are cached; user data lives in encrypted IndexedDB.
-const VER = 'sf-v7';
+const VER = 'sf-v8';
 const SHELL = ['./', 'index.html', 'styles.css', 'manifest.json', 'js/app.js', 'js/crypto.js', 'js/db.js', 'js/detect.js', 'js/dom.js', 'js/passkey.js', 'icons/icon-180.png', 'icons/icon-192.png'];
 
 self.addEventListener('install', (e) => { e.waitUntil(caches.open(VER).then((c) => c.addAll(SHELL)).then(() => self.skipWaiting())); });
